@@ -1,32 +1,28 @@
 public class Main {
 
-    static Triple F(long a, long b) {
+    static Triple F_rec(long a, long b) {
 
         Triple res = new Triple(0, 0, 0);
 
         if(a == 0) {
-            res.gcd = b;
-            res.x = 0;
-            res.y = 1;
-            return res;
+            return new Triple(b, 0, 1);
         }
 
         if(a > 0) {
-            Triple triple_loc = F(b % a, a);
+            Triple triple_loc = F_rec(b % a, a);
             long c = triple_loc.gcd;
             long x = triple_loc.x;
             long y = triple_loc.y;
 
-            Triple res_loc = new Triple(c, y - x * (b / a), x);
-            return res_loc;
+            return new Triple(c, y - x * (b / a), x);
         }
 
         return res;
     }
 
-    static Triple F_wrap(long a, long b) {
+    static Triple F(long a, long b) {
 
-        Triple res = a < b ? F(a, b) : F(b, a);
+        Triple res = a < b ? F_rec(a, b) : F_rec(b, a);
 
         if(a > b) {
             long tmp = res.x;
@@ -42,7 +38,7 @@ public class Main {
         long a = 320;
         long b = 2700;
 
-        Triple res = F_wrap(a, b);
+        Triple res = F(a, b);
 
         System.out.println("a: " + a + ", b: " + b);
         System.out.println("gcd: " + res.gcd + ", x: " + res.x + ", y: " + res.y);
